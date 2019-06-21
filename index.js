@@ -1,9 +1,15 @@
-import { getHtml, getTwitterFollowers } from './lib/scaper'
+import { getHtml, getTwitterFollowers, getInstagramFollowers } from './lib/scaper'
 
 async function go() {
-	const html = await getHtml('https://twitter.com/wesbos')
+	const promiseTwitterFollowers = getTwitterFollowers('https://twitter.com/wesbos')
+	const promiseInstagramFollowers = getInstagramFollowers('https://www.instagram.com/wesbos/')
+	const [ twitterFollowers, instagramFollowers ] = await Promise.all([
+		promiseTwitterFollowers,
+		promiseInstagramFollowers
+	])
 
-	await getTwitterFollowers(html)
+	console.log(`Twitter followers are: ${twitterFollowers}`)
+	console.log(`Instagram followers are: ${instagramFollowers}`)
 }
 
 go()
