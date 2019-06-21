@@ -1,6 +1,11 @@
-import { getHtml, getTwitterFollowers, getInstagramFollowers } from './lib/scaper'
+import express from 'express'
+import lowdb from 'lowdb'
+import FileSync from 'lowdb/adapters/FileAsync'
+import { getTwitterFollowers, getInstagramFollowers } from './lib/scaper'
 
-async function go() {
+const app = express()
+app.get('/scaper', async (req, res, next) => {
+	console.log('Hello world')
 	const promiseTwitterFollowers = getTwitterFollowers('https://twitter.com/wesbos')
 	const promiseInstagramFollowers = getInstagramFollowers('https://www.instagram.com/wesbos/')
 	const [ twitterFollowers, instagramFollowers ] = await Promise.all([
@@ -8,8 +13,10 @@ async function go() {
 		promiseInstagramFollowers
 	])
 
-	console.log(`Twitter followers are: ${twitterFollowers}`)
-	console.log(`Instagram followers are: ${instagramFollowers}`)
-}
+	res.json({
+		twitterFollowers,
+		instagramFollowers
+	})
+})
 
-go()
+app.listen(2293, () => console.log('Hello world by scaper'))
