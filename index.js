@@ -1,19 +1,12 @@
 import express from 'express'
-import { getTwitterFollowers, getInstagramFollowers } from './lib/scaper'
 import db from './lib/db'
+import './lib/cron'
 
 const app = express()
 
-console.log(db)
-
-app.get('/scaper', async (req, res, next) => {
-	console.log('Hello world')
-	const promiseTwitterFollowers = getTwitterFollowers('https://twitter.com/wesbos')
-	const promiseInstagramFollowers = getInstagramFollowers('https://www.instagram.com/wesbos/')
-	const [ twitterFollowers, instagramFollowers ] = await Promise.all([
-		promiseTwitterFollowers,
-		promiseInstagramFollowers
-	])
+app.get('/scaper', async (_, res, __) => {
+	const twitterFollowers = await db.get('twitterFollowers')
+	const instagramFollowers = await db.get('instagramFollowers')
 
 	res.json({
 		twitterFollowers,
