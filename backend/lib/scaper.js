@@ -27,16 +27,27 @@ async function getHtml(url) {
 }
 
 async function runCron() {
-  const promiseTwitterFollowers = getTwitterFollowers('https://twitter.com/d_danailov')
-	const promiseInstagramFollowers = getInstagramFollowers('https://www.instagram.com/tomhanks/')
+  const promiseTwitterFollowers = getTwitterFollowers('https://twitter.com/tomhanks')
+	const promiseInstagramFollowers = getInstagramFollowers('https://www.instagram.com/tomhanks')
 	const [ twitterFollowers, instagramFollowers ] = await Promise.all([
 		promiseTwitterFollowers,
 		promiseInstagramFollowers
-	])
+  ])
+  
+  db
+    .get('twitterFollowers')
+    .push({
+      followers: twitterFollowers,
+      date: new Date()
+    })
+    .write()
 
-	db
-		.set('twitterFollowers', twitterFollowers)
-		.set('instagramFollowers', instagramFollowers)
+  db
+    .get('instagramFollowers')
+    .push({
+      followers: instagramFollowers,
+      date: new Date()
+    })
     .write()
     
   console.log('Done!!!')

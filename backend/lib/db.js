@@ -6,8 +6,8 @@ const adapter = new FileSync('db.json')
 const db = low(adapter)
 
 const defaultSchema = {
-	twitterFollowers: 0,
-	instagramFollowers: 0
+	twitterFollowers: [],
+	instagramFollowers: []
 }
 
 db
