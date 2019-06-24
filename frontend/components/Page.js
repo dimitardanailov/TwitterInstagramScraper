@@ -4,31 +4,31 @@ import { ScrapeProvider } from './ScrapeContext'
 // Custom Hooks
 function usesScrapes() {
 	const [ scrapes, setScrapes ] = useState({
-		twitterFollowers: 0,
-		instagramFollowers: 0
+		twitterFollowers: [],
+		instagramFollowers: []
 	})
 
+	// fetch function
+  async function fetchScrapes() {
+    const res = await fetch('http://localhost:2293/data');
+		const data = await res.json();
+    setScrapes(data);
+  }
+
 	useEffect(() => { 
-		const fetchData = async () => {
-			const res = await fetch('http://localhost:2293/data')
-			const data = await res.json()
-
-			setScrapes(data)
-		}
-
-		fetchData()
+		fetchScrapes()
 	}, [])
 
 	return scrapes
 }
 
 export default function Page({children}) {
-	const scapes = usesScrapes()
+	const scrapes = usesScrapes()
 
 	return (
 		<ScrapeProvider
 			value={{
-				scapes
+				scrapes
 			}}>
 			<div className="page">{children}</div>
 		</ScrapeProvider>
