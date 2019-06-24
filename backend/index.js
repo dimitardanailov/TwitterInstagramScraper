@@ -1,8 +1,11 @@
 import express from 'express'
 import db from './lib/db'
 import './lib/cron'
+import cors from 'cors'
 
 const app = express()
+
+app.use(cors())
 
 app.get('/scaper', async (_, res, __) => {
 	const twitterFollowers = await db.get('twitterFollowers')
