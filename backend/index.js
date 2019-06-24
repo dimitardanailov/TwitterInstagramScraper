@@ -14,4 +14,9 @@ app.get('/scaper', async (_, res, __) => {
 	})
 })
 
+app.get('/data', async (_, res, __) => {
+	const data = db.value()
+	res.json(data)
+})
+
 app.listen(2293, () => console.log('Hello world by scaper'))
