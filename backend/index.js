@@ -1,7 +1,8 @@
 import express from 'express'
-import db from './lib/db'
-import './lib/cron'
 import cors from 'cors'
+import './lib/cron'
+import db from './lib/db'
+import uniqueFollowers from './lib/unique'
 
 const app = express()
 
@@ -18,8 +19,15 @@ app.get('/scaper', async (_, res, __) => {
 })
 
 app.get('/data', async (_, res, __) => {
-	const data = db.value()
-	res.json(data)
+	const { twitterFollowers, instagramFollowers } = db.value()
+
+	const uniqueTwitterFollowers = uniqueFollowers(twitterFollowers)
+	const uniqueInstagramFollowers = uniqueFollowers(instagramFollowers)
+	
+	res.json({
+		twitterFollowers: uniqueTwitterFollowers,
+		instagramFollowers: uniqueInstagramFollowers
+	})
 })
 
 app.listen(2293, () => console.log('Hello world by scaper'))
