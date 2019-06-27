@@ -3,6 +3,7 @@ import cors from 'cors'
 import './lib/cron'
 import db from './lib/db'
 import uniqueFollowers from './lib/unique'
+import removeSimilarSiblings from './lib/removeSimilarSiblings'
 
 const app = express()
 
@@ -21,12 +22,12 @@ app.get('/scaper', async (_, res, __) => {
 app.get('/data', async (_, res, __) => {
 	const { twitterFollowers, instagramFollowers } = db.value()
 
-	const uniqueTwitterFollowers = uniqueFollowers(twitterFollowers)
-	const uniqueInstagramFollowers = uniqueFollowers(instagramFollowers)
-	
+	// const uniqueTwitterFollowers = uniqueFollowers(twitterFollowers)
+	// const uniqueInstagramFollowers = uniqueFollowers(instagramFollowers)
+
 	res.json({
-		twitterFollowers: uniqueTwitterFollowers,
-		instagramFollowers: uniqueInstagramFollowers
+		twitterFollowers: removeSimilarSiblings(twitterFollowers),
+		instagramFollowers: removeSimilarSiblings(instagramFollowers)
 	})
 })
 
