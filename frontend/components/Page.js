@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { ScrapeProvider } from './ScrapeContext'
 
 // Custom Hooks
-function usesScrapes() {
+function useScrapes() {
 	const [ scrapes, setScrapes ] = useState({
 		twitterFollowers: [],
 		instagramFollowers: []
@@ -15,21 +15,20 @@ function usesScrapes() {
     setScrapes(data);
   }
 
-	useEffect(() => { 
+	// didMount/Did Update
+	useEffect(() => {
 		fetchScrapes()
 	}, [])
 
-	return scrapes
+	return { scrapes, fetchScrapes }
 }
 
 export default function Page({children}) {
-	const scrapes = usesScrapes()
+	const hookInfo = useScrapes()
+	console.log(hookInfo)
 
 	return (
-		<ScrapeProvider
-			value={{
-				scrapes
-			}}>
+		<ScrapeProvider value={hookInfo}>
 			<div className="page">{children}</div>
 		</ScrapeProvider>
 	)
