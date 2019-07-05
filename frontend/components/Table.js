@@ -1,9 +1,7 @@
 import { distanceInWords } from 'date-fns'
 
 export default function Table({ scrapes }) {
-	scrapes.reverse()
-
-	console.log('scrapes', scrapes)
+	const scapesReversed = [...scrapes].reverse()
 
 	return (
 		<div>
@@ -16,11 +14,13 @@ export default function Table({ scrapes }) {
 					</tr>
 				</thead>
 				<tbody>
-					{ scrapes.map(scrape => {
-						<tr key={scrape.date}>
-							<td>{scrape.followers}</td>
-							<td>{scrape.date}</td>
-						</tr>
+					{ scapesReversed.map((scrape, index) => {
+						return (
+							<tr key={index}>
+								<td>{scrape.followers}</td>
+								<td>{distanceInWords(new Date(scrape.date), new Date())}</td>
+							</tr>
+						)
 					})}
 				</tbody>
 			</table>
