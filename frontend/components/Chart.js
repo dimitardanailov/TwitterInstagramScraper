@@ -25,7 +25,7 @@ export default class Example extends PureComponent {
         <XAxis dataKey="date" />
         <YAxis domain={['dataMin', 'dataMax']} />
         <Tooltip />
-        <Legend />
+        <Legend /> 
         <Line
           type="monotone"
           dataKey="followers"

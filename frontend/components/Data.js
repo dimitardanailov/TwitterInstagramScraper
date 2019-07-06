@@ -8,16 +8,17 @@ export default function Data() {
 
 	return (
 		<div>
-			<Chart scrapes={scrapes.twitterFollowers}/>
-
 			<button type="button" onClick={fetchScrapes}>
         Refresh Data
       </button>
 			<h2>Twitter:</h2>
 			<Table scrapes={scrapes.twitterFollowers} />
+			<Chart scrapes={scrapes.twitterFollowers}/>
 
 			<h2>Instagram:</h2>
 			<Table scrapes={scrapes.instagramFollowers} />
+			<Chart scrapes={scrapes.instagramFollowers}/>
+
 		</div>
 	)
 }

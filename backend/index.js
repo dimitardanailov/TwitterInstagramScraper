@@ -21,16 +21,10 @@ app.get('/scaper', async (_, res, __) => {
 
 app.get('/aggregate', async (_, res, __) => {
 	const { twitterFollowers, instagramFollowers } = db.value()
-	
-	const uniqueTwitter = removeSimilarSiblings(twitterFollowers)
-	const uniqueInstagram = removeSimilarSiblings(instagramFollowers)
-
-	const aggTwitter = aggregate(twitterFollowers)
-	const aggInstagram = aggregate(instagramFollowers)
 
 	res.json({
-		twitterFollowers: aggTwitter,
-		instagramFollowers: aggInstagram
+		twitterFollowers: aggregate(twitterFollowers),
+		instagramFollowers: aggregate(instagramFollowers)
 	})
 })
 

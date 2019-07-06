@@ -10,7 +10,7 @@ function useScrapes() {
 
 	// fetch function
   async function fetchScrapes() {
-    const res = await fetch('http://localhost:2293/data');
+    const res = await fetch('http://localhost:2293/aggregate');
 		const data = await res.json();
     setScrapes(data);
   }
@@ -25,7 +25,6 @@ function useScrapes() {
 
 export default function Page({children}) {
 	const hookInfo = useScrapes()
-	console.log(hookInfo)
 
 	return (
 		<ScrapeProvider value={hookInfo}>
