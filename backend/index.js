@@ -1,40 +1,55 @@
-import express from 'express'
-import cors from 'cors'
-import './lib/cron'
-import db from './lib/db'
-import aggregate from './lib/aggregate' 
-import removeSimilarSiblings from './lib/removeSimilarSiblings'
+"use strict";
 
-const app = express()
+import express from "express";
+import cors from "cors";
+import "./lib/cron";
+import db from "./lib/db";
+import aggregate from "./lib/aggregate";
+import removeSimilarSiblings from "./lib/removeSimilarSiblings";
 
-app.use(cors())
+const app = express();
 
-app.get('/scaper', async (_, res, __) => {
-	const twitterFollowers = await db.get('twitterFollowers')
-	const instagramFollowers = await db.get('instagramFollowers')
+app.use(cors());
 
-	res.json({
-		twitterFollowers,
-		instagramFollowers
-	})
-})
+app.get("/", (_, res) => {
+  res
+    .status(200)
+    .send("Hello, world!")
+    .end();
+});
 
-app.get('/aggregate', async (_, res, __) => {
-	const { twitterFollowers, instagramFollowers } = db.value()
+app.get("/scaper", async (_, res, __) => {
+  const twitterFollowers = await db.get("twitterFollowers");
+  const instagramFollowers = await db.get("instagramFollowers");
 
-	res.json({
-		twitterFollowers: aggregate(twitterFollowers),
-		instagramFollowers: aggregate(instagramFollowers)
-	})
-})
+  res.json({
+    twitterFollowers,
+    instagramFollowers
+  });
+});
 
-app.get('/raw', async (_, res, __) => {
-	const { twitterFollowers, instagramFollowers } = db.value()
+app.get("/aggregate", async (_, res, __) => {
+  const { twitterFollowers, instagramFollowers } = db.value();
 
-	res.json({
-		twitterFollowers: removeSimilarSiblings(twitterFollowers),
-		instagramFollowers: removeSimilarSiblings(instagramFollowers)
-	})
-})
+  res.json({
+    twitterFollowers: aggregate(twitterFollowers),
+    instagramFollowers: aggregate(instagramFollowers)
+  });
+});
 
-app.listen(2293, () => console.log('Hello world by scaper'))
+app.get("/raw", async (_, res, __) => {
+  const { twitterFollowers, instagramFollowers } = db.value();
+
+  res.json({
+    twitterFollowers: removeSimilarSiblings(twitterFollowers),
+    instagramFollowers: removeSimilarSiblings(instagramFollowers)
+  });
+});
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log("Hello world by scaper");
+  console.log("Press Ctrl+C to quit.");
+});
+
+module.exports = app;
